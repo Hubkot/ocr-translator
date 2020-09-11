@@ -7,6 +7,7 @@ from PIL import Image
 import numpy as np
 import cv2
 import os
+import keyboard
 ## OCR
 import pytesseract
 
@@ -57,27 +58,29 @@ class Capture(QtWidgets.QWidget):
 
         img = ImageGrab.grab(bbox=(x1, y1, x2, y2))
         img.save('capture.png')
+
+####TODO: Zwiększyć kontrast - przerobić na czarnobiały?
         img = cv2.cvtColor(np.array(img), cv2.COLOR_BGR2RGB)
 
-#### Wprowadzić próbe rozczytania tekstu
-        
+####TODO: Wprowadzić próbe rozczytania tekstu
         cv2.imshow('Captured Image', img)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
-def translate():
-    print("Tlumacze...")
+def translate(whatLang):
+    print("OCR obrazu .... w języku ", whatLang)
     pathToFile = os.path.dirname(os.path.abspath('capture.png'))+ '\capture.png'
-    print(pathToFile)
     pytesseract.pytesseract.tesseract_cmd = r'F:\Silniki\TesseractOCR\tesseract'
-    print(pytesseract.image_to_string(Image.open(pathToFile), lang='rus'))
-##    Image.open(pathToFile).show()
+    ocr_string = pytesseract.image_to_string(Image.open(pathToFile), lang=whatLang)
+    print(ocr_string)
+    return ocr_string
     
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
-    window = Capture()
-    translate()
-    window.show()
-  
-    app.aboutToQuit.connect(app.deleteLater)
+##    window = Capture()
+    window = "s"
+    if window: 
+        ocr_string = translate('rus')
+        print(ocr_string)
+##    app.aboutToQuit.connect(app.deleteLater)
     sys.exit(app.exec_())
