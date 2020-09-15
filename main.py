@@ -77,8 +77,11 @@ def translate(whatLang):
     
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
-##    window = Capture()
-    window = "s"
+    # Press PAGE UP then PAGE DOWN to type "foobar".
+##    keyboard.add_hotkey('page up', lambda: keyboard.write('foobar'))
+##    keyboard.wait()
+    window = Capture()
+    
     if window: 
         ocr_string = translate('rus')
         print(ocr_string)
